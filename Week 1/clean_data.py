@@ -22,4 +22,3 @@ for x in range (10):
         plt.imshow(x_train[y_train == x].values[0].reshape(28, 28), cmap='gray') # x_train[y_train == x] เอาแถวที่ label = x  
 plt.show()                                                                       # .values[0] เลือกแค่แถวแรก
                                                                                  # .reshape(28, 28) เปลี่ยนรูปเป็น 28x28 = 784 pixels
-                                                                                
