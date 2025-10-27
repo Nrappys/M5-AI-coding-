@@ -8,9 +8,11 @@ data_re =  data.replace('',np.nan) #เปลี่ยนempty เป็น NaN
 missing_values = data_re.isnull().sum() #นับ NaN หรือ null ในแต่ละ column มาบวกกัน
 print(missing_values)
 
-print('-' * 200)
+data_re = data_re.dropna() # ลบ missing values ทั้งหมด
 
-morethan_255 = data_re > 255 
+print('-' * 200) # กันตาระเบิด
+
+morethan_255 = data_re > 255  #หาcellที่มีค่าเกิน 255
 print(morethan_255.sum()) 
 
 y_train = data_re["label"] # เลือก column label 
