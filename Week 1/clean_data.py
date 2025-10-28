@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-data = pd.read_csv(r"Week 1\train.csv") 
+data = pd.read_csv(r"Data\train.csv") 
 
 data_re =  data.replace('',np.nan) #เปลี่ยนempty เป็น NaN
 missing_values = data_re.isnull().sum() #นับ NaN หรือ null ในแต่ละ column มาบวกกัน
