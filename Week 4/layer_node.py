@@ -3,7 +3,7 @@ import pandas as pd
 import time
 import matplotlib.pyplot as plt
 
-hidden_layer = 10
+hidden_layer = 1000
 
 def init_params():
     # He initialization
@@ -15,7 +15,7 @@ def init_params():
 
 def forward_prop(W1, b1, W2, b2, X):
     Z1 = W1.dot(X) + b1
-    A1 = tanh(Z1)  
+    A1 = relu(Z1)  
     Z2 = W2.dot(A1) + b2
     A2 = softmax(Z2)
     return Z1, A1, Z2, A2
@@ -57,7 +57,7 @@ def back_prop(Z1, A1, Z2, A2, W1, W2, X, Y, lambd):
     dZ2 = A2 - one_hot_Y
     dW2 = 1/m * np.dot(dZ2, A1.T) + (lambd / m) * W2
     db2 = 1/m * np.sum(dZ2, axis=1, keepdims=True)
-    dZ1 = np.dot(W2.T, dZ2) * deriv_tanh(Z1) 
+    dZ1 = np.dot(W2.T, dZ2) * deriv_relu(Z1) 
     dW1 = 1/m * np.dot(dZ1, X.T) + (lambd / m) * W1
     db1 = 1/m * np.sum(dZ1, axis=1, keepdims=True)
     return dW1, db1, dW2, db2
@@ -115,7 +115,7 @@ def gradient_descent(X, Y, alpha, n_iters, batch_size, lambd):
             print(f"Iteration {i}, Loss: {loss:.4f}, Accuracy: {accuracy:.4f}, TimeUse: {time_per_iter:.4f} seconds")
 
         # Learning rate decay
-        alpha = alpha * (1 / (1 + 0.001 * i)) #----------------------------------------------------------------------------------------------------------------------
+        alpha = alpha * (1 / (1 + 0.0001 * i)) #----------------------------------------------------------------------------------------------------------------------
 
     # Plot accuracy and loss
     plt.figure(figsize=(12, 5))
@@ -153,7 +153,7 @@ Y_train = data_train[0]
 X_train = data_train[1:] / 255.0
 
 # Train the model
-W1, b1, W2, b2 = gradient_descent(X_train, Y_train, alpha=0.1, n_iters=20000, batch_size=64, lambd=0.1) #------------------------------------------------------------------------
+W1, b1, W2, b2 = gradient_descent(X_train, Y_train, alpha=0.1, n_iters=1000, batch_size=64, lambd=0.1) #------------------------------------------------------------------------
 
 # Evaluate on the development set
 dev_predictions = get_predictions(X_dev, W1, b1, W2, b2)
