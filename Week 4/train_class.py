@@ -120,7 +120,8 @@ class DeepNeuralNetwork:
 def train_model(model, X_train, Y_train, X_val, Y_val, n_iters, batch_size):
     """
     ฟังก์ชันนี้จะรับ "โมเดล" ที่บริสุทธิ์เข้ามา
-    และทำหน้าที่ "สับข้อมูล", "แบ่ง Batch", และ "วนลูป" การเทรนให้
+    และทำหน้าที่ "แบ่ง Batch", และ "วนลูป" การเทรนให้
+    (ลบการ Shuffle ภายในลูปออกแล้ว)
     """
     m = X_train.shape[1]
     
@@ -134,15 +135,19 @@ def train_model(model, X_train, Y_train, X_val, Y_val, n_iters, batch_size):
     
     for i in range(n_iters + 1):
         
-
-        # --- 1. ส่วนที่ "ยุ่ง" กับข้อมูล (Shuffle & Batching) ---
-        permutation = np.random.permutation(m)
-        X_shuffled = X_train[:, permutation]
-        Y_shuffled = Y_train[permutation]
+        # --- 1. ส่วนที่ "ยุ่ง" กับข้อมูล (Batching) ---
+        # ⭐️⭐️⭐️ START: แก้ไขจุดนี้ ⭐️⭐️⭐️
+        # ลบการ Shuffle ภายในลูปออก
+        # permutation = np.random.permutation(m)
+        # X_shuffled = X_train[:, permutation]
+        # Y_shuffled = Y_train[permutation]
 
         for j in range(0, m, batch_size):
-            X_batch = X_shuffled[:, j:j+batch_size]
-            Y_batch = Y_shuffled[j:j+batch_size]
+            # ใช้อินพุต X_train, Y_train โดยตรง
+            X_batch = X_train[:, j:j+batch_size]
+            Y_batch = Y_train[j:j+batch_size]
+            # ⭐️⭐️⭐️ END: แก้ไขจุดนี้ ⭐️⭐️⭐️
+            
             m_batch = Y_batch.size
 
             # --- 2. เรียกใช้ "ตรรกะ" ของโมเดล ---
@@ -159,8 +164,6 @@ def train_model(model, X_train, Y_train, X_val, Y_val, n_iters, batch_size):
             AL_val, _ = model._forward_prop(X_val)
             loss = model._compute_loss(AL_val, Y_val, Y_val.size)
             
-            # ⭐️ (แก้ไขจุดคำนวณซ้ำซ้อน) ⭐️
-            # ใช้ AL_val ที่คำนวณไว้แล้ว ไม่ต้องเรียก model.predict(X_val)
             predictions = np.argmax(AL_val, axis=0) 
             accuracy = model.get_accuracy(predictions, Y_val)
             
@@ -170,7 +173,7 @@ def train_model(model, X_train, Y_train, X_val, Y_val, n_iters, batch_size):
             
             print(f"Iteration {i}, Loss: {loss:.4f}, Accuracy: {accuracy:.4f}, Time: {time_per_iter:.2f}s")
             if accuracy >= 0.93:
-                print("93 leaw Ja")
+                print("93% leaw Ja")
                 break
         
         # --- 4. อัปเดต Learning Rate ในโมเดล ---
@@ -208,7 +211,7 @@ def _plot_graphs(iteration_list, accuracy_list, loss_list):
 # ---------------------------------------------------------------------
 print("Loading and preparing data...")
 data = pd.read_csv(r'Data/train.csv').to_numpy()
-np.random.shuffle(data) # สับเปลี่ยน
+np.random.shuffle(data) # สับเปลี่ยน (ยังคงสับครั้งแรกตอนโหลดข้อมูล)
 data_dev = data[:1000].T
 Y_dev = data_dev[0]
 X_dev = data_dev[1:] / 255.0 # Normalization
@@ -231,8 +234,7 @@ model = DeepNeuralNetwork(layer_dims=layers_config,
 trained_model = train_model(model, 
                             X_train, Y_train, 
                             X_dev, Y_dev, 
-                            n_iters=1000, 
+                            n_iters=3200, 
                             batch_size=64)
 
-# 3. ใช้โมเดลที่เทรนเสร็จแล้ว (ซึ่งตอนนี้มีพารามิเตอร์ใหม่)
 print("Training complete.")
