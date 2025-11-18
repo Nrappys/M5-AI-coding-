@@ -115,7 +115,7 @@ def gradient_descent(X, Y, alpha, n_iters, batch_size, lambd):
             print(f"Iteration {i}, Loss: {loss:.4f}, Accuracy: {accuracy:.4f}, TimeUse: {time_per_iter:.4f} seconds")
 
         # Learning rate decay
-        alpha = alpha * (1 / (1 + 0.001 * i)) #----------------------------------------------------------------------------------------------------------------------
+        alpha = alpha * (1 / (1 + 0.01 * i)) #----------------------------------------------------------------------------------------------------------------------
 
     # Plot accuracy and loss
     plt.figure(figsize=(12, 5))
