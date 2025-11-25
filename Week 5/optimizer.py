@@ -159,9 +159,9 @@ def train_model(model, X_train, Y_train, X_val, Y_val, n_iters, batch_size):
             
             print(f"Iteration {i}, Loss: {loss:.4f}, Accuracy: {accuracy:.4f}, Time: {time_per_iter:.2f}s")
             #---------Edit-Accuracy-You-Want------------
-            if accuracy >= 0.93:    
-                print("93% leaw Ja")
-                break
+            # if accuracy >= 0.93:    
+            #     print("93% leaw Ja")
+            #     break
             #------------------------------------------
         # --- 4. อัปเดต Learning Rate ในโมเดล ---
         model.update_learning_rate(i)
@@ -215,9 +215,13 @@ layers_config = [784, 100, 100, 100, 10]
 model = DeepNeuralNetwork(layer_dims=layers_config, 
                           learning_rate=0.01)
 
+Ado = X_train.shape[1]
+
 trained_model = train_model(model, 
                             X_train, Y_train, 
                             X_dev, Y_dev, 
                             n_iters=3200, 
-                            batch_size=64) 
+                            batch_size=Ado)  #Mini-Batch กำหนด Size > 1
+                                            #Stochastic กำหนด Size = 1
+                                            #Batch      กำหนด Size = Ado
 print("Training complete.")

@@ -63,7 +63,7 @@ def back_prop(Z1, A1, Z2, A2, W1, W2, X, Y, lambd):
     return dW1, db1, dW2, db2
 
 def one_hot(Y):
-    one_hot_Y = np.zeros((10, Y.size))  # Fixed 10 classes for digits 0-9
+    one_hot_Y = np.zeros((10, Y.size)) 
     one_hot_Y[Y, np.arange(Y.size)] = 1
     return one_hot_Y
 
@@ -100,10 +100,9 @@ def gradient_descent(X, Y, alpha, n_iters, batch_size, lambd):
             dW1, db1, dW2, db2 = back_prop(Z1, A1, Z2, A2, W1, W2, X_batch, Y_batch, lambd)
             W1, b1, W2, b2 = update_params(W1, b1, W2, b2, dW1, db1, dW2, db2, alpha)
         
-        end_time = time.time() # End time of the iteration
+        end_time = time.time()
         time_per_iter = end_time - start_time
 
-        # Monitor performance
         if i % 1 == 0:
             Z1, A1, Z2, A2 = forward_prop(W1, b1, W2, b2, X)
             predictions = get_predictions(A2)
@@ -114,7 +113,6 @@ def gradient_descent(X, Y, alpha, n_iters, batch_size, lambd):
             iteration_list.append(i)
             print(f"Iteration {i}, Loss: {loss:.4f}, Accuracy: {accuracy:.4f}, TimeUse: {time_per_iter:.4f} seconds")
 
-        # Learning rate decay
         alpha = alpha * (1 / (1 + 0.01 * i)) #----------------------------------------------------------------------------------------------------------------------
 
     # Plot accuracy and loss
