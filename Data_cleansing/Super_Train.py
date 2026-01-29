@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 # ==============================
 # 1️⃣ โหลด Data
 # ==============================
-data = pd.read_csv(r"Data/train.csv")
+data = pd.read_csv(r"Data\dataset_F.csv")
 data_original = data.copy()  # เก็บต้นฉบับไว้เปรียบเทียบ
 
 # ==============================

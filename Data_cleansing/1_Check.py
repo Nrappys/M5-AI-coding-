@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
  
 # SETTINGS
-filename = "data.csv"   # <--- YOUR FILE
+filename = "Data\\dataset_F.csv"   # <--- YOUR FILE
 target_col = "label"                      # <--- target column
 valid_label_values = list(range(10))      # <--- allowed label values (0–9 for MNIST)
 feature_range = (0, 255)                  # <--- allowed pixel/value range

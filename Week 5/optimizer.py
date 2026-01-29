@@ -197,7 +197,7 @@ def _plot_graphs(iteration_list, accuracy_list, loss_list):
 # ส่วนที่ 1: โหลดข้อมูล 
 # ---------------------------------------------------------------------
 print("Loading and preparing data...")
-data = pd.read_csv(r'Data/train.csv').to_numpy()
+data = pd.read_csv(r'new_clean.csv').to_numpy()
 np.random.shuffle(data) # สับเปลี่ยน (ยังคงสับครั้งแรกตอนโหลดข้อมูล)
 data_dev = data[:1000].T
 Y_dev = data_dev[0]
@@ -221,7 +221,7 @@ trained_model = train_model(model,
                             X_train, Y_train, 
                             X_dev, Y_dev, 
                             n_iters=3200, 
-                            batch_size=Ado)  #Mini-Batch กำหนด Size > 1
+                            batch_size=32) #Mini-Batch กำหนด Size > 1
                                             #Stochastic กำหนด Size = 1
                                             #Batch      กำหนด Size = Ado
 print("Training complete.")
